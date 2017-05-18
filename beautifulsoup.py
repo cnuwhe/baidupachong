@@ -1,6 +1,15 @@
 import urllib.request
 import re
 from bs4 import BeautifulSoup
+import datetime
+
+
+def getyesterday():
+    now = datetime.datetime.now()
+    yesterday = now - datetime.timedelta(days=1)
+    yesterday = yesterday.strftime('%m-%d')
+    yesterday = yesterday.replace('0', '')
+    return yesterday
 
 
 def readkeywords(filename):
@@ -52,10 +61,19 @@ def readtitle(homepage):
         except Exception as e:
             print(e)
     return contents
+
+
 if __name__ == '__main__':
     homepage = readhomepage(
         "http://tieba.baidu.com/f?kw=%E9%98%BF%E5%BE%B7%E8%8E%B1%E5%BE%B7%E5%A4%A7%E5%AD%A6&fr=wwwt")
     basepage = "http://tieba.baidu.com"
     titles = readtitle(homepage)
+    yesterday = getyesterday()
+    i = 0
     for each in titles:
-        print(each)
+        if(each.find(yesterday) != -1):
+            break
+        i = i + 1
+    titles = titles[0:i]
+    #
+
